@@ -2,8 +2,10 @@
 .classpath
 .springBeans
 **/target/*
+target/*
 **/.settings/*
 .settings/*
+*.iml
 
 # Package Files #
 *.jar
