@@ -9,6 +9,7 @@
 	<mvc:annotation-driven />
 	
 	<mvc:resources location="classpath:/swagger-ui/" mapping="/swagger-ui/**" />
+    <mvc:resources location="classpath:/webapp/" mapping="/webapp/**" />
 
 	<context:component-scan base-package="com.zenika.business" />
 	<context:component-scan base-package="com.zenika.web" />

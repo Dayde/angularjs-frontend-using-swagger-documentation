@@ -19,7 +19,7 @@ public class ZenContactServer {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		int port = 8080;
+		int port = 8081;
 		String contextPath = "zencontact";
 		Server server = new Server(port);
         ServletContextHandler context = new ServletContextHandler(
@@ -35,7 +35,8 @@ public class ZenContactServer {
         
         System.out.println("Server started");
         System.out.printf("REST API documentation: http://localhost:%s/%s/api-docs %n",port,contextPath);
-        System.out.printf("REST API documentation UI: http://localhost:%s/%s/swagger-ui/index.html",port,contextPath);
+        System.out.printf("REST API documentation UI: http://localhost:%s/%s/swagger-ui/index.html %n",port,contextPath);
+		System.out.printf("AngularJS UI: http://localhost:%s/%s/webapp/index.html",port,contextPath);
         server.join();
 
 	}

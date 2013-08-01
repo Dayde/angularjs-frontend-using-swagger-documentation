@@ -1,0 +1,32 @@
+<div class="row-fluid">
+	<div class="span4"></div>
+<div class="thumbnail span4">
+	<form class="form-horizontal text-center" name="editForm">
+		<h3>Edit contact</h3>
+		<fieldset ng-show="dataReceived">
+			
+			<div class="control-group">
+				<label class="control-label" for="inputFirstname" >Firstname</label>
+				<div class="controls">
+					<input id="inputFirstname" type="text" class="input-medium" placeholder="Firstname" ng-model="contact.firstname" autofocus required/>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="inputLastname" >Lastname</label>
+				<div class="controls" ng-class="{error: editForm.name.$invalid}">
+					<input id="inputLastname" type="text" class="input-medium" placeholder="Lastname" ng-model="contact.lastname" required />
+				</div>
+			</div>
+
+			<div>
+				<button class="btn btn-large btn-primary" ng-click="save($event)" ng-disabled="editForm.$invalid" >Save</button>
+				<button class="btn btn-large btn-primary" ng-click="cancel($event)" >Cancel</button>
+			</div>
+		</fieldset>
+        <div ng-hide="dataReceived"><img src="images/throbber.gif" alt="Loading..." /></div>
+	</form>
+
+</div>
+	<div class="span4"></div>
+</div>

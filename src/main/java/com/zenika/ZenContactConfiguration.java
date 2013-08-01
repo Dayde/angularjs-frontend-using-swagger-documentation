@@ -39,8 +39,10 @@ public class ZenContactConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/swagger-ui/**")
-            	.addResourceLocations("classpath:/swagger-ui/");
+        registry.addResourceHandler("/swagger-ui/**")
+            .addResourceLocations("classpath:/swagger-ui/");
+		registry.addResourceHandler("/webapp/**")
+				.addResourceLocations("classpath:/webapp/");
     }
 	
 }
