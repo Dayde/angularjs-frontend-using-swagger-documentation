@@ -11,7 +11,7 @@ Basically, the application is split in several layers : the View in HTML, the Co
 ### URLService
 
 First I registered the base URL as a AngularJS value in the app.js file :
-
+``` JavaScript
     var protocol = 'http';
     var domain = 'localhost';
     var port = '8081';
@@ -23,9 +23,11 @@ First I registered the base URL as a AngularJS value in the app.js file :
 
     angular.module('myApp').value('baseUrl', baseUrl);
     angular.module('myApp').value('documentationUrl', documentationUrl);
+```
 
 Then, all you need to take advantage of Swagger documentation is a service that will resolve the URLs dynamically. Here is how I implemented it :
 
+``` JavaScript
     angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', '$q', function (baseUrl, documentationUrl, $http, $q) {
         var deferred = $q.defer();
         var apiDoc = deferred.promise;
@@ -53,7 +55,7 @@ Then, all you need to take advantage of Swagger documentation is a service that 
         return UrlService;
 
     }]);
-
+```
 
 
 This service only returns the URL to the documentation of the resource asked. Then, this documentation will be specifically used in resource specific services to get the resource URL.
@@ -62,6 +64,7 @@ This service only returns the URL to the documentation of the resource asked. Th
 
 In our example, the resources handled by the application are contacts. Here is how the AngularJS service managing the contacts retrieves the resource URL:
 
+``` JavaScript
     var contactResourceUrl;
     var contactDocUrl;
     var docUrlReceived;
@@ -78,10 +81,11 @@ In our example, the resources handled by the application are contacts. Here is h
             contactResourceUrl = response.basePath + response.resourcePath;
         });
     });
-
+```
 
 In order to be sure these URLs are loaded before we use them I used a function wrapper:
 
+``` JavaScript
     var safeCall = function (functionToCall) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
@@ -94,15 +98,18 @@ In order to be sure these URLs are loaded before we use them I used a function w
             });
         };
     };
+```
 
 And there you go, you can now populate your service with functions using the URL retrieved in the documentation :
 
+``` JavaScript
     ContactService.getContactList = safeCall(function (callback)
     {
         $http.get(contactResourceUrl).success(function (data, status) {
             callback(data, status);
         });
     });
+```
 
 For the simplicity of the example, I did not get down to the operation level and stopped at the resource level which is sufficient if the API follows the REST architecture.
 
