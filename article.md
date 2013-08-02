@@ -10,7 +10,8 @@ Basically, the application is split in several layers : the View in HTML, the Co
 
 ### URLService
 
-First I registered the base URL as a AngularJS value in the app.js file :
+First the base URL is registered as an AngularJS value in the app.js file :
+
 ``` JavaScript
     var protocol = 'http';
     var domain = 'localhost';
@@ -25,7 +26,7 @@ First I registered the base URL as a AngularJS value in the app.js file :
     angular.module('myApp').value('documentationUrl', documentationUrl);
 ```
 
-Then, all you need to take advantage of Swagger documentation is a service that will resolve the URLs dynamically. Here is how I implemented it :
+Then, all you need to take advantage of Swagger documentation is a service that will resolve the URLs dynamically. Here is an implementation :
 
 ``` JavaScript
     angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', function (baseUrl, documentationUrl, $http) {
@@ -110,7 +111,7 @@ For the simplicity of the example, I did not get down to the operation level and
 
 It's also quite hard not to mention HATEOAS when talking about REST API and in fact Swagger and HATEOAS are complementary. It is fairly easy to use them together.
 
-Using both, one question may arise: which one to use? Well I'd say to prefer the HATEOAS natural way of following links as long as the resource containing the link you need is already available. However for bookmarking purpose and "shorcuts" in the resource tree, you'd sometimes rather go for the Swagger documentation approach. For example when you look at a contact list implementing HATEOAS, you will use the contact link to get to his/her details. However, if you bookmarked the details page of a specific contact, you won't go through the contact list and so you won't have the link you need! This is where you want to use Swagger.
+Using both, one question may arise: which one to use? Well I'd tend to prefer the HATEOAS natural way of following links as long as the resource containing the link you need is already available. However for bookmarking purpose and "shorcuts" in the resources tree, you'd sometimes rather go for the Swagger documentation approach. For example when you look at a contact list implementing HATEOAS, you will use the contact link to get to his/her details. However, if you bookmarked the details page of a specific contact, you won't go through the contact list and so you won't have the link you need! This is where you want to use Swagger.
 
 ## Conclusion
 
