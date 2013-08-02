@@ -1,16 +1,9 @@
 'use strict';
 
-angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', '$q', function (baseUrl, documentationUrl, $http, $q) {
-	var deferred = $q.defer();
-	var apiDoc = deferred.promise;
+angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', function (baseUrl, documentationUrl, $http) {
 	var UrlService = {};
-	var urlReceived = false;
 
-	$http.get(baseUrl + documentationUrl).success(function (data) {
-		UrlService.baseUrl = baseUrl;
-		deferred.resolve(data);
-		urlReceived = true;
-	});
+	var apiDoc = $http.get(baseUrl + documentationUrl);
 
 	var getApi = function (apiDocumentation, description) {
 		var api;
@@ -21,7 +14,7 @@ angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$
 	};
 
 	UrlService.contactUrl = apiDoc.then(function (apiDocumentation) {
-		return getApi(apiDocumentation, 'contacts');
+		return getApi(apiDocumentation.data, 'contacts');
 	});
 
 	return UrlService;
