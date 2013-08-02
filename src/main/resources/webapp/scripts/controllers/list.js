@@ -1,10 +1,8 @@
 'use strict';
 
-angular.module('myApp').controller('ListCtrl', ['$scope', '$location', 'ContactService', function ($scope, $location, ContactService) {
+angular.module('myApp').controller('ListCtrl', function ($scope, $location, ContactService) {
 
 	$scope.contacts = [];
-	$scope.dataReceived = false;
-	$scope.searchString = '';
 
 
 	$scope.addContact = function () {
@@ -26,4 +24,4 @@ angular.module('myApp').controller('ListCtrl', ['$scope', '$location', 'ContactS
 
 	$scope.refreshContacts();
 
-}]);
+});

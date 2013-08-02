@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').service('ContactService', ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
+angular.module('myApp').service('ContactService', function ($http, $q, UrlService) {
 
 	var ContactService = {};
 
@@ -62,4 +62,4 @@ angular.module('myApp').service('ContactService', ['$http', '$q', 'UrlService', 
 
 	return ContactService;
 
-}]);
+});

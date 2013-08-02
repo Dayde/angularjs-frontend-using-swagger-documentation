@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp', [])
-	.config(['$routeProvider', function ($routeProvider) {
+	.config(function ($routeProvider) {
 		$routeProvider
 			.when('/list', {
 				templateUrl: 'views/list.html',
@@ -16,7 +16,7 @@ angular.module('myApp', [])
 				redirectTo: '/list'
 			});
 
-	}]);
+	});
 
 var protocol = 'http';
 var domain = 'localhost';

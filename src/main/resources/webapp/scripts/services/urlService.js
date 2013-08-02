@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', function (baseUrl, documentationUrl, $http) {
+angular.module('myApp').service('UrlService', function (baseUrl, documentationUrl, $http) {
 	var UrlService = {};
 
 	var apiDoc = $http.get(baseUrl + documentationUrl);
@@ -19,4 +19,4 @@ angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$
 
 	return UrlService;
 
-}]);
+});

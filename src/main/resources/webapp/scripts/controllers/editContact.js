@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').controller('EditContactCtrl', ['$scope', '$routeParams', '$location', 'ContactService', function ($scope, $routeParams, $location, ContactService) {
+angular.module('myApp').controller('EditContactCtrl', function ($scope, $routeParams, $location, ContactService) {
 	$scope.contact = {};
 	$scope.dataReceived = false;
 
@@ -30,4 +30,4 @@ angular.module('myApp').controller('EditContactCtrl', ['$scope', '$routeParams',
 		$location.path('/list');
 	};
 
-}]);
+});
