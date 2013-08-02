@@ -29,7 +29,7 @@ First the base URL is registered as an AngularJS value in the app.js file :
 Then, all you need to take advantage of Swagger documentation is a service that will resolve the URLs dynamically. Here is an implementation :
 
 ``` JavaScript
-    angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', function (baseUrl, documentationUrl, $http) {
+    angular.module('myApp').service('UrlService', function (baseUrl, documentationUrl, $http) {
         var UrlService = {};
 
         var apiDoc = $http.get(baseUrl + documentationUrl);
@@ -48,7 +48,7 @@ Then, all you need to take advantage of Swagger documentation is a service that 
 
         return UrlService;
 
-    }]);
+    });
 ```
 
 
@@ -83,13 +83,17 @@ In order to be sure these URLs are loaded before we use them I used a function w
     var safeCall = function (functionToCall) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
+            var deferred = $q.defer();
+
             // When the doc URL is available.
             docUrlReceived.then(function () {
                 // When the resource URL is available.
                 resourceUrlReceived.then(function () {
-                    return functionToCall.apply(this, args);
+                    deferred.resolve(functionToCall.apply(this, args));
                 });
             });
+
+            return deferred.promise;
         };
     };
 ```
@@ -97,11 +101,8 @@ In order to be sure these URLs are loaded before we use them I used a function w
 And there you go, you can now populate your service with functions using the URL retrieved in the documentation :
 
 ``` JavaScript
-    ContactService.getContactList = safeCall(function (callback)
-    {
-        $http.get(contactResourceUrl).success(function (data, status) {
-            callback(data, status);
-        });
+    ContactService.getContactList = safeCall(function () {
+        return $http.get(contactResourceUrl);
     });
 ```
 
