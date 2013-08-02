@@ -28,17 +28,10 @@ First I registered the base URL as a AngularJS value in the app.js file :
 Then, all you need to take advantage of Swagger documentation is a service that will resolve the URLs dynamically. Here is how I implemented it :
 
 ``` JavaScript
-    angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', '$q', function (baseUrl, documentationUrl, $http, $q) {
-        var deferred = $q.defer();
-        var apiDoc = deferred.promise;
+    angular.module('myApp').service('UrlService', ['baseUrl', 'documentationUrl', '$http', function (baseUrl, documentationUrl, $http) {
         var UrlService = {};
-        var urlReceived = false;
 
-        $http.get(baseUrl + documentationUrl).success(function (data) {
-            UrlService.baseUrl = baseUrl;
-            deferred.resolve(data);
-            urlReceived = true;
-        });
+        var apiDoc = $http.get(baseUrl + documentationUrl);
 
         var getApi = function (apiDocumentation, description) {
             var api;
@@ -49,7 +42,7 @@ Then, all you need to take advantage of Swagger documentation is a service that 
         };
 
         UrlService.contactUrl = apiDoc.then(function (apiDocumentation) {
-            return getApi(apiDocumentation, 'contacts');
+            return getApi(apiDocumentation.data, 'contacts');
         });
 
         return UrlService;
