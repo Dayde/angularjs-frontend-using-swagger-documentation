@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').service('ContactService', ['$http', 'UrlService', function ($http, UrlService) {
+angular.module('myApp').service('ContactService', ['$http', '$q', 'UrlService', function ($http, $q, UrlService) {
 
 	var ContactService = {};
 
@@ -26,55 +26,38 @@ angular.module('myApp').service('ContactService', ['$http', 'UrlService', functi
 	var safeCall = function (functionToCall) {
 		return function () {
 			var args = Array.prototype.slice.call(arguments);
+			var deferred = $q.defer();
+
 			// When the doc URL is available.
 			docUrlReceived.then(function () {
 				// When the resource URL is available.
 				resourceUrlReceived.then(function () {
-					return functionToCall.apply(this, args);
+					deferred.resolve(functionToCall.apply(this, args));
 				});
 			});
+
+			return deferred.promise;
 		};
 	};
 
-	ContactService.getContactList = safeCall(function (callback)
-	{
-		$http.get(contactResourceUrl).success(function (data, status) {
-			callback(data, status);
-		});
+	ContactService.getContactList = safeCall(function () {
+		return $http.get(contactResourceUrl);
 	});
 
-	ContactService.getContactToEdit = safeCall(function (contactId, callback) {
-		ContactService.getContact(contactResourceUrl + '/' + contactId, callback);
+	ContactService.getContactToEdit = safeCall(function (contactId) {
+		return ContactService.getContact(contactResourceUrl + '/' + contactId);
 	});
 
-	ContactService.getContact = function (link, callback) {
-		var contact = {};
-		$http.get(link).success(function (data, status) {
-			callback(data, status);
-		});
-		return contact;
+	ContactService.getContact = function (link) {
+		return $http.get(link);
 	};
 
-	ContactService.addContact = safeCall(function (contact, success, error) {
-		$http.post(contactResourceUrl, JSON.stringify(contact)).success(function (data, status) {
-			success(data, status);
-		}).error(function (data, status) {
-				error(data, status);
-			});
+	ContactService.addContact = safeCall(function (contact) {
+		return $http.post(contactResourceUrl, JSON.stringify(contact));
 	});
 
-	ContactService.updateContact = function (contact, success, error) {
-		$http.put(contactResourceUrl + '/' + contact.id, JSON.stringify(contact)).success(function (data, status) {
-			success(data, status);
-		}).error(function (data, status) {
-				error(data, status);
-			});
-	};
-
-	ContactService.deleteContact = function (contact, callback) {
-		$http.delete(contactResourceUrl + '/' + contact.id).success(function (data, status) {
-			callback(data, status);
-		});
+	ContactService.updateContact = function (contact) {
+		return $http.put(contactResourceUrl + '/' + contact.id, JSON.stringify(contact));
 	};
 
 	return ContactService;

@@ -5,8 +5,8 @@ angular.module('myApp').controller('EditContactCtrl', ['$scope', '$routeParams',
 	$scope.dataReceived = false;
 
 	if($location.path() !== '/addContact') {
-		ContactService.getContactToEdit($routeParams.contactId, function (data) {
-			$scope.contact = data;
+		ContactService.getContactToEdit($routeParams.contactId).then(function (httpResponse) {
+			$scope.contact = httpResponse.data;
 			$scope.dataReceived = true;
 		});
 	} else {
@@ -15,12 +15,11 @@ angular.module('myApp').controller('EditContactCtrl', ['$scope', '$routeParams',
 
 	$scope.save = function () {
 		if($location.path() === '/addContact') {
-			ContactService.addContact($scope.contact, function () {
+			ContactService.addContact($scope.contact).then(function () {
 				$location.path('/list');
 			});
 		} else {
-			ContactService.updateContact($scope.contact,
-				function () {
+			ContactService.updateContact($scope.contact).then(function () {
 					$location.path('/list');
 				}
 			);

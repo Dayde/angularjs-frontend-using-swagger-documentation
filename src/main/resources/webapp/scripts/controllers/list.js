@@ -15,26 +15,15 @@ angular.module('myApp').controller('ListCtrl', ['$scope', '$location', 'ContactS
 		$location.path('/editContact/' + contact.id);
 	};
 
-	$scope.updateContact = function (contact) {
-		$scope.dataReceived = false;
-		ContactService.updateContact(contact, function () {
-			$scope.refreshContacts();
-		}, function () {
-			$scope.refreshContacts();
-		});
-	};
-
 	$scope.refreshContacts = function () {
 		$scope.dataReceived = false;
-		ContactService.getContactList(function(data) {
-			$scope.contacts = data;
+		var httpPromise = ContactService.getContactList();
+		httpPromise.then(function(httpResponse) {
+			$scope.contacts = httpResponse.data;
 			$scope.dataReceived = true;
 		});
 	};
 
-	ContactService.getContactList(function(data) {
-		$scope.contacts = data;
-		$scope.dataReceived = true;
-	});
+	$scope.refreshContacts();
 
 }]);
